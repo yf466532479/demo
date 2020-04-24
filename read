@@ -1,0 +1,6 @@
+1，导出我都用的 post方法
+2.使用post方法导出时候 会有前端传参后端无法接受的问题，这是 content-type 的格式导致的，
+还有可能就是  axios的 传参 类型 导致的， 当后台使用  @requestParam 接参时 前端的 传参必须是  {param:data}
+key必须是  param
+
+还有就是  responseType 必须是  blob 类型 要不然 前端没办法导出。
