@@ -6,10 +6,9 @@ import cn.hutool.poi.excel.ExcelWriter;
 import cn.hutool.poi.excel.StyleSet;
 import cn.hutool.poi.excel.style.StyleUtil;
 import com.file.upordownfile.User;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,26 +80,6 @@ public class DownloadFile {
         writer.merge(1,1,5,7,"第二次",true);
         writer.merge(1,1,8,10,"第三次",true);
 
-        CellStyle writerCellStyle = writer.getCellStyle();
-
-        Cell cell = writer.getCell(0, 0);
-
-
-        writerCellStyle.setFillForegroundColor((short) 011);
-
-        cell.setCellStyle(writerCellStyle);
-
-//        Workbook workbook = writer.getWorkbook();
-
-//        writer.writeCellValue(3,4,"nidayede");
-
-//        StyleSet styleSet = new StyleSet(workbook);
-
-//        styleSet.setBackgroundColor(IndexedColors.RED,false);
-
-//        writer.setStyleSet(styleSet);
-
-
         writer.passRows(1);
         String fileName = "qqqqq";
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
@@ -108,6 +87,15 @@ public class DownloadFile {
 
         OutputStream os = response.getOutputStream();
         writer.write(list, true);
+        Workbook workbook = writer.getWorkbook();
+        CellStyle cellStyle = workbook.createCellStyle();
+        //填充单元格
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        //填红色
+        cellStyle.setFillForegroundColor(HSSFColor.RED.index);
+        //获取下标
+        writer.getCell(4, 4).setCellStyle(cellStyle);
+
         writer.flush(os);
         writer.close();
     }
